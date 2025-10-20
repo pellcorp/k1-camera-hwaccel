@@ -8,8 +8,8 @@ if ! command -v cmake >/dev/null 2>&1; then
     echo "Please install cmake first"
 elif ! command -v wget >/dev/null 2>&1; then
     echo "Please install wget first"
-elif ! command -v gcc >/dev/null 2>&1; then
-    echo "Please install gcc and build-essential first"
+elif ! command -v make >/dev/null 2>&1; then
+    echo "Please install make first"
 fi
 
 cd $BUILD_DIR
