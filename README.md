@@ -22,3 +22,10 @@ Simply run `bash build.sh`. The build scripts will automatically download and co
 - `mjpg-streamer`
 
 The compiled files will output into `local/` for use on systems
+
+## Using Docker
+
+```bash
+mkdir -p local
+docker run -v ./local:/build/local --rm -it $(docker build -q .)
+```
