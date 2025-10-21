@@ -29,3 +29,9 @@ The compiled files will output into `local/` for use on systems
 mkdir -p local
 docker run -v ./local:/build/local --rm -it $(docker build -q .)
 ```
+
+### Dockerhub
+
+```bash
+mkdir -p local
+docker run -v ./local:/build/local --rm -it zevaryx/k1-camera-hwaccel:latest

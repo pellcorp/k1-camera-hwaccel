@@ -4,3 +4,4 @@ toolchains/
 Dockerfile
 .dockerignore
 README.md
+.git/
