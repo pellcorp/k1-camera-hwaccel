@@ -8,5 +8,8 @@ export GCC_PREFIX=mips-linux-gnu
 export TOOLCHAIN=${TOOLCHAIN_DIR}/${GCC_PREFIX}
 export CFLAGS="-I${BUILD_PREFIX}/include/"
 export LDFLAGS="-L${BUILD_PREFIX}/lib/"
+export CC="${TOOLCHAIN}-gcc"
+export AR="${TOOLCHAIN}-ar"
+export LD="${TOOLCHAIN}-ld"
 
 export PATH="$TOOLCHAIN_DIR:$PATH"

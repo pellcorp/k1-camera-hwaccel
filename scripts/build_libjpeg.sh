@@ -9,6 +9,6 @@ fi
 
 cd "jpeg-9d"
 
-./configure --prefix=$BUILD_PREFIX
+./configure --host=x86_64 --build=mips --prefix=$BUILD_PREFIX
 make
 make install
