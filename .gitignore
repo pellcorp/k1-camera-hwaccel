@@ -1,3 +1,5 @@
 local/
 packages/
 toolchains/
+.idea
+*.tar.gz

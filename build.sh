@@ -14,7 +14,8 @@ fi
 
 cd $BUILD_DIR
 
-if [ ! -d toolchains/mips-gcc720-glibc229 ]; then
+# pellcorp/k1-klipper-fw-build will have /opt/toolchains/mips-gcc720-glibc229/
+if [ ! -d /opt/toolchains/mips-gcc720-glibc229/ ] && [ ! -d toolchains/mips-gcc720-glibc229 ]; then
     echo "Getting toolchain..."
     mkdir -p toolchains && cd toolchains
     wget "https://github.com/ballaswag/k1-discovery/releases/download/1.0.0/mips-gcc720-glibc229.tar.gz"
@@ -37,3 +38,7 @@ fi
 bash scripts/build_libjpeg.sh
 bash scripts/build_libsynchronous-frames.sh
 bash scripts/build_mjpg-streamer.sh
+
+cd local
+tar -zcvf ../mjpg-streamer.tar.gz *
+

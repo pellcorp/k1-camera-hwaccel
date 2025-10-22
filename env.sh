@@ -3,7 +3,14 @@
 export BUILD_DIR="$PWD"
 export SOURCE_DIR="$BUILD_DIR/packages"
 export BUILD_PREFIX="$BUILD_DIR/local"
-export TOOLCHAIN_DIR="$BUILD_DIR/toolchains/mips-gcc720-glibc229/bin"
+
+# pellcorp/k1-klipper-fw-build will have /opt/toolchains/mips-gcc720-glibc229/
+if [ -d /opt/toolchains/mips-gcc720-glibc229/ ]; then
+  export TOOLCHAIN_DIR="/opt/toolchains/mips-gcc720-glibc229/bin"
+else
+  export TOOLCHAIN_DIR="$BUILD_DIR/toolchains/mips-gcc720-glibc229/bin"
+fi
+
 export GCC_PREFIX=mips-linux-gnu
 export TOOLCHAIN=${TOOLCHAIN_DIR}/${GCC_PREFIX}
 export CFLAGS="-I${BUILD_PREFIX}/include/"
