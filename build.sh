@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # in case build is executed from outside current dir be a gem and change the dir
 BUILD_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd -P)"
@@ -29,6 +28,23 @@ fi
 mkdir -p build/mjpg-streamer
 
 # Fixme - convert to Makefile
+clean() {
+  cd $BUILD_DIR/jpeg-9d
+  git clean -Xdf
+
+  cd $BUILD_DIR/libsynchronous-frames
+  [ -d _build ] && rm -rf _build
+
+  cd $BUILD_DIR/mjpg-streamer/mjpg-streamer-experimental
+  [ -d _build ] && rm -rf _build
+}
+
+# TODO - am I supposed to use Cmake here?
+#make[1]: Leaving directory '/mnt/data/Development/k1-mjpg-streamer/jpeg-9d'
+#CMake Error: The source directory "/mnt/data/Development/k1-mjpg-streamer/jpeg-9d" does not appear to contain CMakeLists.txt.
+#Specify --help for usage, or press the help button on the CMake GUI.
+#make: *** No targets specified and no makefile found.  Stop.
+#CMake Error: Error processing file: /mnt/data/Development/k1-mjpg-streamer/jpeg-9d/_build/cmake_install.cmake
 build_jpeg9() {
   cd $BUILD_DIR/jpeg-9d
   ./configure --host=x86_64 --build=mips --prefix=$BUILD_PREFIX
@@ -37,8 +53,6 @@ build_jpeg9() {
 }
 
 build_libsynchronous() {
-  cd $BUILD_DIR/libsynchronous-frames
-  [ -d _build ] && rm -rf _build
   mkdir -p _build
   cd _build
   cmake ..
@@ -48,12 +62,12 @@ build_libsynchronous() {
 
 build_mjpg_streamer() {
   cd $BUILD_DIR/mjpg-streamer/mjpg-streamer-experimental
-  [ -d _build ] && rm -rf _build
   make
   cd _build
   cmake --install . --prefix $BUILD_PREFIX
 }
 
+clean
 build_jpeg9
 build_libsynchronous
 build_mjpg_streamer

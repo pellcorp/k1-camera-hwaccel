@@ -1,7 +1,7 @@
 FROM ubuntu:focal
 
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential sudo wget cmake
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential sudo wget cmake git
 
 RUN adduser --disabled-password --gecos "" developer && \
   usermod -a -G sudo developer && \
