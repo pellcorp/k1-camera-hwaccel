@@ -1,0 +1,40 @@
+name: branch build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    container:
+      image: pellcorp/k1-camera-build:latest
+      options: --user 1001
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: build
+      run: |
+        chmod +x ./build.sh
+        ./build.sh
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: mjpg-streamer
+        path: build/mjpg-streamer.tar.gz
+
+    - name: branch release
+      uses: softprops/action-gh-release@v2
+      with:
+        name: ${{ github.ref_name }}
+        tag_name: ${{ github.ref_name }}
+        files: build/mjpg-streamer.tar.gz
+        fail_on_unmatched_files: true
