@@ -8,4 +8,4 @@ Build Scripts to build `mjpg-streamer` with optional hardware acceleration (sync
 docker run -ti -v $PWD:$PWD pellcorp/k1-camera-build $PWD/build.sh
 ```
 
-This will produce a `mjpg-streamer.tar.gz` in the build/ directory
+This will produce a `mjpg-streamer.tar.gz` in the / directory
