@@ -1,6 +1,7 @@
 # MJPG Streamer for Creality OS with optional input_syncframes for NV12 encoder on the Creality Camera
 
-Build Scripts to build `mjpg-streamer` with optional hardware acceleration (syncframe input plugin) on the K1/K1 Max
+Build Scripts to build `mjpg-streamer` with optional hardware acceleration (syncframe input plugin) on the K1 Series of
+printers, which potentially also supports the nebula camera!?
 
 ## Credits
 
@@ -25,9 +26,9 @@ https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
 
 Clone the repo (and submodules).
 
-1. `git clone --recursive https://github.com/pellcorp/k1-mjpg-streamer && cd guppyscreen`
+1. `git clone --recursive https://github.com/pellcorp/k1-mjpg-streamer && cd k1-mjpg-streamer`
 2. `docker run -ti -v $PWD:$PWD pellcorp/k1-camera-build $PWD/build.sh`
-3. The `build/mjpg-streamer.tar.gz` can be extracted to your K1, I suggest the /usr/data directory 
+3. The `build/mjpg-streamer.tar.gz` can be extracted to your printer, I suggest the /usr/data directory 
 
 ## Running it
 
