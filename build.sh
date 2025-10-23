@@ -10,7 +10,7 @@ if [ ! -f /.dockerenv ]; then
   exit 1
 fi
 
-export BUILD_PREFIX="$BUILD_DIR/build"
+export BUILD_PREFIX="$BUILD_DIR/build/mjpg-streamer"
 # this is the docker toolchain
 export TOOLCHAIN_DIR="/opt/toolchains/mips-gcc720-glibc229/bin"
 export GCC_PREFIX=mips-linux-gnu
@@ -24,20 +24,21 @@ export LD="${TOOLCHAIN}-ld"
 export PATH="$TOOLCHAIN_DIR:$PATH"
 
 if [ -d build ]; then
-    rm -rf build/*
+    rm -rf build/
 fi
-mkdir -p build
+mkdir -p build/mjpg-streamer
 
 # Fixme - convert to Makefile
 build_jpeg9() {
-  cd $CURRENT_DIR/jpeg-9d
+  cd $BUILD_DIR/jpeg-9d
   ./configure --host=x86_64 --build=mips --prefix=$BUILD_PREFIX
   make
   make install
 }
 
 build_libsynchronous() {
-  cd $CURRENT_DIR/libsynchronous-frames
+  cd $BUILD_DIR/libsynchronous-frames
+  [ -d _build ] && rm -rf _build
   mkdir -p _build
   cd _build
   cmake ..
@@ -46,7 +47,8 @@ build_libsynchronous() {
 }
 
 build_mjpg_streamer() {
-  cd $CURRENT_DIR/mjpg-streamer/mjpg-streamer-experimental
+  cd $BUILD_DIR/mjpg-streamer/mjpg-streamer-experimental
+  [ -d _build ] && rm -rf _build
   make
   cd _build
   cmake --install . --prefix $BUILD_PREFIX
@@ -56,5 +58,5 @@ build_jpeg9
 build_libsynchronous
 build_mjpg_streamer
 
-cd $CURRENT_DIR/build/
-tar -zcvf ../mjpg-streamer.tar.gz *
+cd $BUILD_DIR/build/
+tar -zcvf mjpg-streamer.tar.gz mjpg-streamer
