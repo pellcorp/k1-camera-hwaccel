@@ -1,0 +1,3 @@
+[submodule "mjpg-streamer"]
+	path = mjpg-streamer
+	url = https://github.com/pellcorp/ingenic-mjpg-streamer
