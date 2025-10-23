@@ -1,0 +1,18 @@
+LOCAL_PATH := $(my-dir)
+
+include $(CLEAR_VARS)
+CMAKE_PATH=$(LOCAL_PATH)
+LOCAL_MODULE:= sync-frames
+LOCAL_MODULE_TAGS :=optional
+include $(BUILD_CMAKE_DEVICE)
+
+
+LOCAL_PATH := $(LOCAL_PATH)/example
+
+#include $(CLEAR_VARS)
+#CMAKE_PATH=$(LOCAL_PATH)/../
+#LOCAL_MODULE:= sync-frames-example
+#LOCAL_DEPANNER_MODULES := sync-frames osd
+#LOCAL_MODULE_TAGS := optional
+#CMAKE_CONF_OPTS := -DSYNCFRAME_BUILD_EXAMPLE=ON
+#include $(BUILD_CMAKE_DEVICE)
