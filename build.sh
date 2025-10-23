@@ -30,7 +30,7 @@ mkdir -p build/mjpg-streamer
 # Fixme - convert to Makefile
 clean() {
   cd $BUILD_DIR/jpeg-9d
-  git clean -Xdf
+  git clean -xdf
 
   cd $BUILD_DIR/libsynchronous-frames
   [ -d _build ] && rm -rf _build
