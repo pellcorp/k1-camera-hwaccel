@@ -1,44 +1,67 @@
 #!/bin/bash
 set -e
 
-source env.sh
+# in case build is executed from outside current dir be a gem and change the dir
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd -P)"
+cd $CURRENT_DIR
 
-echo $CFLAGS
-if ! command -v cmake >/dev/null 2>&1; then
-    echo "Please install cmake first"
-elif ! command -v wget >/dev/null 2>&1; then
-    echo "Please install wget first"
-elif ! command -v make >/dev/null 2>&1; then
-    echo "Please install make first"
+if [ ! -f /.dockerenv ]; then
+  echo "ERROR: This script is only supported running in docker"
+  exit 1
 fi
+
+export BUILD_DIR="$PWD"
+export BUILD_PREFIX="$BUILD_DIR/build"
+export TOOLCHAIN_DIR="/opt/toolchains/mips-gcc720-glibc229/bin"
+export GCC_PREFIX=mips-linux-gnu
+export TOOLCHAIN=${TOOLCHAIN_DIR}/${GCC_PREFIX}
+export CFLAGS="-I${BUILD_PREFIX}/include/"
+export LDFLAGS="-L${BUILD_PREFIX}/lib/"
+export CC="${TOOLCHAIN}-gcc"
+export AR="${TOOLCHAIN}-ar"
+export LD="${TOOLCHAIN}-ld"
+
+export PATH="$TOOLCHAIN_DIR:$PATH"
 
 cd $BUILD_DIR
 
-# pellcorp/k1-klipper-fw-build will have /opt/toolchains/mips-gcc720-glibc229/
-if [ ! -d /opt/toolchains/mips-gcc720-glibc229/ ] && [ ! -d toolchains/mips-gcc720-glibc229 ]; then
-    echo "Getting toolchain..."
-    mkdir -p toolchains && cd toolchains
-    wget "https://github.com/ballaswag/k1-discovery/releases/download/1.0.0/mips-gcc720-glibc229.tar.gz"
-    tar -xf mips-gcc720-glibc229.tar.gz
-    rm mips-gcc720-glibc229.tar.gz
-    cd $BUILD_DIR
-fi
-
-if [ -d local ]; then
+if [ -d build ]; then
     echo "Cleaning up old builds..."
-    rm -rf local/*
+    rm -rf build/*
 else
-    echo "Creating ./local for prefix target..."
-    mkdir -p local
-fi
-if [ ! -d packages ]; then
-    mkdir -p packages
+    echo "Creating ./build for prefix target..."
+    mkdir -p build
 fi
 
-bash scripts/build_libjpeg.sh
-bash scripts/build_libsynchronous-frames.sh
-bash scripts/build_mjpg-streamer.sh
+build_jpeg9() {
+  cd $CURRENT_DIR/jpeg-9d
+  ./configure --host=x86_64 --build=mips --prefix=$BUILD_PREFIX
+  make
+  make install
+}
 
-cd local
+build_libsynchronous() {
+  cd $CURRENT_DIR/libsynchronous-frames
+
+  mkdir -p _build && cd _build
+  cmake ..
+  make
+  cmake --install . --prefix $BUILD_PREFIX
+}
+
+build_mjpg_streamer() {
+  cd $CURRENT_DIR/mjpg-streamer/mjpg-streamer-experimental
+
+  make
+
+  cd _build
+  cmake --install . --prefix $BUILD_PREFIX
+}
+
+# Fixme - convert to Makefile
+build_jpeg9
+build_libsynchronous
+build_mjpg_streamer
+
+cd $CURRENT_DIR/build/
 tar -zcvf ../mjpg-streamer.tar.gz *
-

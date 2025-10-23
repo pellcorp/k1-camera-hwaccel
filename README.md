@@ -1,37 +1,11 @@
 # K1 Camera with Hardware Acceleration
 
-Build Scripts to build `mjpg-streamer` with hardware acceleration on the K1/K1 Max
-
-## Prerequisites
-
-- `cmake`
-- `make`
-- `wget`
-
-On Ubuntu, run:
-
-`sudo apt-get update && sudo apt-get install build-essential wget cmake`
-
-## Building the packages
-
-Simply run `bash build.sh`. The build scripts will automatically download and compile:
-
-- The required `gcc` toolchain
-- `libjpeg`
-- `libsynchronous-frames`
-- `mjpg-streamer`
-
-The compiled files will output into `local/` for use on systems
+Build Scripts to build `mjpg-streamer` with optional hardware acceleration (syncframe input plugin) on the K1/K1 Max
 
 ## Using Docker
 
 ```bash
-mkdir -p local
-docker run -v ./local:/build/local --rm -it $(docker build -q .)
+docker run -ti -v $PWD:$PWD pellcorp/k1-camera-build $PWD/build.sh
 ```
 
-### Dockerhub
-
-```bash
-mkdir -p local
-docker run -v ./local:/build/local --rm -it zevaryx/k1-camera-hwaccel:latest
+This will produce a `mjpg-streamer.tar.gz` in the build/ directory
