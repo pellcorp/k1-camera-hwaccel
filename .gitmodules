@@ -1,3 +1,6 @@
 [submodule "mjpg-streamer"]
 	path = mjpg-streamer
 	url = https://github.com/pellcorp/ingenic-mjpg-streamer
+[submodule "jpeg-9d"]
+	path = jpeg-9d
+	url = https://github.com/pellcorp/jpeg-9d.git
