@@ -10,7 +10,6 @@ if [ ! -f /.dockerenv ]; then
 fi
 
 export BUILD_PREFIX="$BUILD_DIR/build/mjpg-streamer"
-# this is the docker toolchain
 export TOOLCHAIN_DIR="/opt/toolchains/mips-gcc720-glibc229/bin"
 export GCC_PREFIX=mips-linux-gnu
 export TOOLCHAIN=${TOOLCHAIN_DIR}/${GCC_PREFIX}
@@ -19,6 +18,11 @@ export LDFLAGS="-L${BUILD_PREFIX}/lib/"
 export CC="${TOOLCHAIN}-gcc"
 export AR="${TOOLCHAIN}-ar"
 export LD="${TOOLCHAIN}-ld"
+export STRIP="${TOOLCHAIN}-strip"
+
+export CFLAGS="$CFLAGS -Os -ffunction-sections -fdata-sections"
+export CXXFLAGS="$CFLAGS"
+export LDFLAGS="$LDFLAGS -Wl,--gc-sections -s"
 
 export PATH="$TOOLCHAIN_DIR:$PATH"
 
@@ -61,6 +65,7 @@ build_libsynchronous() {
 }
 
 build_mjpg_streamer() {
+  export CMAKE_BUILD_TYPE=MinSizeRel
   cd $BUILD_DIR/mjpg-streamer/mjpg-streamer-experimental
   make
   cd _build
@@ -73,4 +78,7 @@ build_libsynchronous
 build_mjpg_streamer
 
 cd $BUILD_DIR/build/
+$STRIP --strip-unneeded mjpg-streamer/bin/mjpg_streamer
+find mjpg-streamer -name "*.so" -exec $STRIP --strip-unneeded {} +
+
 tar -zcvf mjpg-streamer.tar.gz mjpg-streamer
