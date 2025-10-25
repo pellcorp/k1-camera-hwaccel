@@ -31,7 +31,6 @@ if [ -d build ]; then
 fi
 mkdir -p build/mjpg-streamer
 
-# Fixme - convert to Makefile
 clean() {
   cd $BUILD_DIR/jpeg-9d
   git clean -xdf
@@ -43,12 +42,6 @@ clean() {
   [ -d _build ] && rm -rf _build
 }
 
-# TODO - am I supposed to use Cmake here?
-#make[1]: Leaving directory '/mnt/data/Development/k1-mjpg-streamer/jpeg-9d'
-#CMake Error: The source directory "/mnt/data/Development/k1-mjpg-streamer/jpeg-9d" does not appear to contain CMakeLists.txt.
-#Specify --help for usage, or press the help button on the CMake GUI.
-#make: *** No targets specified and no makefile found.  Stop.
-#CMake Error: Error processing file: /mnt/data/Development/k1-mjpg-streamer/jpeg-9d/_build/cmake_install.cmake
 build_jpeg9() {
   cd $BUILD_DIR/jpeg-9d
   ./configure --host=x86_64 --build=mips --prefix=$BUILD_PREFIX
@@ -57,6 +50,7 @@ build_jpeg9() {
 }
 
 build_libsynchronous() {
+  cd $BUILD_DIR/libsynchronous-frames
   mkdir -p _build
   cd _build
   cmake ..
