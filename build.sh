@@ -73,6 +73,5 @@ build_mjpg_streamer
 
 cd $BUILD_DIR/build/
 $STRIP --strip-unneeded mjpg-streamer/bin/mjpg_streamer
-find mjpg-streamer -name "*.so" -exec $STRIP --strip-unneeded {} +
 
 tar -zcvf mjpg-streamer.tar.gz mjpg-streamer
