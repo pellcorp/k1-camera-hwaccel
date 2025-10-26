@@ -7,6 +7,13 @@ printers, which potentially also supports the nebula camera!?
 
 Thanks to zevaryx and Sekilsgs2 for all the initial work getting this build working
 
+## Related Projects
+
+The following forks of upstream projects (which are submodules in this one):
+
+- https://github.com/pellcorp/jpeg-9d
+- https://github.com/pellcorp/ingenic-mjpg-streamer
+
 ## Build Environment
 
 ### Install Docker
